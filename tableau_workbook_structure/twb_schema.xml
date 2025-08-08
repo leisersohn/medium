@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Tableau Workbook XML main structure
+-->
+<workbook>
+    <!-- Internal Tableau version/feature tracking -->
+    <document-format-change-manifest>
+        <!-- ... -->
+    </document-format-change-manifest>
+    
+    <!-- Preferences -->
+    <preferences>
+        <!-- ... -->
+    </preferences>
+    
+    <!-- Animation/style flags -->
+    <_.fcp.AnimationOnByDefault.false...style>
+        <!-- ... -->
+    </_.fcp.AnimationOnByDefault.false...style>
+    
+    <!-- 1. Datasources -->
+    <datasources>
+
+        <!-- Parameters -->
+        <datasource name = 'Paramaters'>
+            <column caption='Country Parameter' datatype='string' name='[Parameter 1]'>
+                <calculation class='tableau' formula='default_value' />
+                <members>
+                    <member value='Value_A' />
+                    <member value='Value_B' />
+                </members>
+            </column>
+        </datasource>
+
+        <!-- Live CSV Connection (file stored in Data/) -->
+        <datasource caption="Live Product Data" name="federated.{id}">
+            <connection class='federated'>
+                <named-connections>
+                    <named-connection caption='Live Product Data' name='textscan.{id}'>
+                        <connection class="textscan" directory='Data'  filename="live_csv_file.csv" />
+                    </named-connection>
+                </named-connections>
+            </connection>
+        </datasource>
+        
+        <!-- Extract Redshift Custom SQL Connection -->
+        <datasource caption="Redshift CustomSQL" name="federated.{id}">
+            <connection class='federated'>
+                <named-connections>
+                    <named-connection caption='server.com' name='redshift.{id}'>
+                        <!-- Possible values for 'class': 'mysql' / 'redshift' / 'postgres' / 'excel-direct'... -->
+                        <connection class='redshift' dbname='dev' odbc-connect-string-extras='' one-time-sql='' port='5439' schema='default' server='server.com' username='guest' />
+                    </named-connection>
+                </named-connections>
+                <_.fcp.ObjectModelEncapsulateLegacy.false...relation connection='redshift.{id}' name='Custom SQL Query1' type='text'>select * from dual</_.fcp.ObjectModelEncapsulateLegacy.false...relation>
+            <extract>
+                <!-- Details on the extract used and its location... -->
+                <connection access_mode='readonly' authentication='auth-none' author-locale='en_US' class='hyper' dbname='Data/Datasources/Custom_SQL.hyper' default-settings='yes' schema='Extract' sslmode='' tablename='Extract' update-time='07/30/2025 12:01:39 PM' username='tableau_internal_user' />
+            </extract>                
+        </datasource>
+    </datasources>
+    
+    <!-- 2. Worksheets -->
+    <worksheets>
+        <worksheet name="Live CSV Overview">
+            <table>
+                <!-- ... -->
+            </table>
+            <simple-id>1</simple-id>
+        </worksheet>
+    </worksheets>
+    
+    <!-- 3. Dashboards -->
+    <dashboards>
+        <dashboard name="CSV Dashboard">
+            <zones>
+                <!-- Images stored in Image/ -->
+                <zone id="1" param='Image/template.png' type-v2='bitmap'>
+                </zone>
+                <zone id="2" type="Sheet 1">
+                </zone>
+            </zones>
+            <devicelayouts>
+                <!-- The layout of each zone of the dashboard -->
+            </devicelayouts>
+            <simple-id uuid='{id}' />
+        </dashboard>
+    </dashboards>
+    
+    <!-- 4. Windows -->
+    <windows>
+        <window class='worksheet' name="Sheet 1">
+            <simple-id uuid='{id}' />
+        </window>
+        <window class='dashboard' name="Dashboard 1">
+            <simple-id uuid='{id}' />
+        </window>
+    </windows>
+    
+    <!-- 5. Thumbnails -->
+    <thumbnails>
+        <!-- Thumbnails as base64-encoded --> 
+    </thumbnails>
+</workbook>
